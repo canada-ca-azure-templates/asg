@@ -30,5 +30,5 @@ if ($provisionningState -eq "Failed") {
 }
 
 # Cleanup validation resource content
-#Write-Host "Cleanup validation resource content...";
-#New-AzureRmResourceGroupDeployment -ResourceGroupName PwS2-validate-asg-RG -Mode Complete -TemplateFile (Resolve-Path "$PSScriptRoot\parameters\cleanup.json") -Force -Verbose
+Write-Host "Cleanup validation resource content...";
+New-AzureRmResourceGroupDeployment -ResourceGroupName PwS2-validate-asg-RG -Mode Complete -TemplateFile (Resolve-Path "$PSScriptRoot\parameters\cleanup.json") -Force -Verbose
