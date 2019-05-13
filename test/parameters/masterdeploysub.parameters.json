@@ -23,7 +23,7 @@
                     "name": "post-cleanup",
                     "location": "canadacentral",
                     "templateLink": "https://raw.githubusercontent.com/canada-ca-arm/asg/dev/test/parameters/cleanup.json",
-                    "parametersFile": "",
+                    "parametersFile": "https://raw.githubusercontent.com/canada-ca-arm/asg/dev/test/parameters/cleanup.json",
                     "dependsOn": [
                         "asg"
                     ]
