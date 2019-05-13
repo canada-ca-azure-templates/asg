@@ -4,7 +4,7 @@ Param(
     [string]$Location = "canadacentral"
 )
 
-$asgDevURL = "https://raw.githubusercontent.com/canada-ca-arm/asg/dev/azuredeploy.json"
+$asgDevURL = "https://raw.githubusercontent.com/canada-ca-azure-templates/asg/dev/azuredeploy.json"
 
 #******************************************************************************
 # Script body

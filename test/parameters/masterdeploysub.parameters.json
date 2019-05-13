@@ -8,13 +8,13 @@
                     "name": "resourcegroups",
                     "location": "canadacentral",
                     "templateLink": "https://raw.githubusercontent.com/canada-ca/accelerators_accelerateurs-azure/master/Templates/arm/resourcegroups/20190207.2/azuredeploysub.json",
-                    "parametersFile": "https://raw.githubusercontent.com/canada-ca-arm/asg/dev/test/parameters/dependancy-resourcegroups-canadacentral.parameters.json"
+                    "parametersFile": "https://raw.githubusercontent.com/canada-ca-azure-templates/asg/dev/test/parameters/dependancy-resourcegroups-canadacentral.parameters.json"
                 },
                 {
                     "name": "asg",
                     "location": "canadacentral",
-                    "templateLink": "https://raw.githubusercontent.com/canada-ca-arm/asg/dev/azuredeploysub.json",
-                    "parametersFile": "https://raw.githubusercontent.com/canada-ca-arm/asg/dev/test/parameters/validate-asg.parameters.json",
+                    "templateLink": "https://raw.githubusercontent.com/canada-ca-azure-templates/asg/dev/azuredeploysub.json",
+                    "parametersFile": "https://raw.githubusercontent.com/canada-ca-azure-templates/asg/dev/test/parameters/validate-asg.parameters.json",
                     "dependsOn": [
                         "resourcegroups"
                     ]
@@ -22,8 +22,8 @@
                 {
                     "name": "post-cleanup",
                     "location": "canadacentral",
-                    "templateLink": "https://raw.githubusercontent.com/canada-ca-arm/asg/dev/test/parameters/cleanup.json",
-                    "parametersFile": "https://raw.githubusercontent.com/canada-ca-arm/asg/dev/test/parameters/cleanup.json",
+                    "templateLink": "https://raw.githubusercontent.com/canada-ca-azure-templates/asg/dev/test/parameters/cleanup.json",
+                    "parametersFile": "https://raw.githubusercontent.com/canada-ca-azure-templates/asg/dev/test/parameters/cleanup.json",
                     "dependsOn": [
                         "asg"
                     ]
