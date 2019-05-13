@@ -1,17 +1,16 @@
 Param(
     [Parameter(Mandatory = $false)][string]$templateLibraryName = "asg",
     [string]$templateName = "azuredeploy.json",
-    [string]$Location = "canadacentral"
+    [string]$Location = "canadacentral",
+    [string]$subscription = "2de839a0-37f9-4163-a32a-e1bdb8d6eb7e"
 )
-
-$asgDevURL = "https://raw.githubusercontent.com/canada-ca-azure-templates/asg/dev/azuredeploy.json"
 
 #******************************************************************************
 # Script body
 # Execution begins here
 #******************************************************************************
 
-Select-AzureRmSubscription PwS2-CCC-Validation
+Select-AzureRmSubscription -Subscription $subscription
 
 # Cleanup validation resource content in case it did not properly completed and left over components are still lingeringcd
 Write-Host "Cleanup validation resource content...";
@@ -30,5 +29,5 @@ if ($provisionningState -eq "Failed") {
 }
 
 # Cleanup validation resource content
-#Write-Host "Cleanup validation resource content...";
-#New-AzureRmResourceGroupDeployment -ResourceGroupName PwS2-validate-asg-RG -Mode Complete -TemplateFile (Resolve-Path "$PSScriptRoot\parameters\cleanup.json") -Force -Verbose
+Write-Host "Cleanup validation resource content...";
+New-AzureRmResourceGroupDeployment -ResourceGroupName PwS2-validate-asg-RG -Mode Complete -TemplateFile (Resolve-Path "$PSScriptRoot\parameters\cleanup.json") -Force -Verbose
