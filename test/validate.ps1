@@ -15,7 +15,7 @@ Select-AzureRmSubscription PwS2-CCC-Validation
 
 # Cleanup validation resource content in case it did not properly completed and left over components are still lingeringcd
 Write-Host "Cleanup validation resource content...";
-New-AzureRmResourceGroupDeployment -ResourceGroupName PwS2-validate-asg-1-RG -Mode Complete -TemplateFile (Resolve-Path "$PSScriptRoot\parameters\cleanup.json") -Force -Verbose
+New-AzureRmResourceGroupDeployment -ResourceGroupName PwS2-validate-asg-RG -Mode Complete -TemplateFile (Resolve-Path "$PSScriptRoot\parameters\cleanup.json") -Force -Verbose
 
 # Start the deployment
 Write-Host "Starting deployment...";
@@ -30,5 +30,5 @@ if ($provisionningState -eq "Failed") {
 }
 
 # Cleanup validation resource content
-Write-Host "Cleanup validation resource content...";
-New-AzureRmResourceGroupDeployment -ResourceGroupName PwS2-validate-asg-1-RG -Mode Complete -TemplateFile (Resolve-Path "$PSScriptRoot\parameters\cleanup.json") -Force -Verbose
+#Write-Host "Cleanup validation resource content...";
+#New-AzureRmResourceGroupDeployment -ResourceGroupName PwS2-validate-asg-RG -Mode Complete -TemplateFile (Resolve-Path "$PSScriptRoot\parameters\cleanup.json") -Force -Verbose
