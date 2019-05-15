@@ -9,15 +9,6 @@
                     "location": "canadacentral",
                     "templateLink": "https://raw.githubusercontent.com/canada-ca-azure-templates/resourcegroups/20190514/template/azuredeploysub.json",
                     "parametersFile": "https://raw.githubusercontent.com/canada-ca-azure-templates/asg/dev/test/parameters/dependancy-resourcegroups-canadacentral.parameters.json"
-                },
-                {
-                    "name": "asg",
-                    "location": "canadacentral",
-                    "templateLink": "https://raw.githubusercontent.com/canada-ca-azure-templates/asg/dev/template/azuredeploysub.json",
-                    "parametersFile": "https://raw.githubusercontent.com/canada-ca-azure-templates/asg/dev/test/parameters/validate-asg.parameters.json",
-                    "dependsOn": [
-                        "resourcegroups"
-                    ]
                 }
             ]
         }
