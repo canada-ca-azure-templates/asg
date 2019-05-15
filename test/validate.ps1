@@ -39,7 +39,7 @@ Write-Host "Cleanup validation resource content...";
 New-AzureRmResourceGroupDeployment -ResourceGroupName PwS2-validate-$templateLibraryName-RG -Mode Complete -TemplateFile (Resolve-Path "$PSScriptRoot\parameters\cleanup.json") -Force -Verbose
 
 # Start the deployment
-Write-Host "Starting validation deployment...";
+Write-Host "Starting dependancies deployment...";
 
 New-AzureRmDeployment -Location $Location -Name "Deploy-Infrastructure-Dependancies" -TemplateUri "https://raw.githubusercontent.com/canada-ca-azure-templates/masterdeploy/20190514/template/masterdeploysub.json" -TemplateParameterFile (Resolve-Path -Path "$PSScriptRoot\parameters\masterdeploysub.parameters.json") -Verbose;
 
@@ -51,6 +51,8 @@ if ($provisionningState -eq "Failed") {
 }
 
 # Validating server template
+Write-Host "Starting $templateLibraryName validation deployment...";
+
 $validationURL = getValidationURL
 New-AzureRmResourceGroupDeployment -ResourceGroupName PwS2-validate-$templateLibraryName-RG -Name "validate-$templateLibraryName-template" -TemplateUri $validationURL -TemplateParameterFile (Resolve-Path "$PSScriptRoot\parameters\validate.parameters.json") -Verbose
 
