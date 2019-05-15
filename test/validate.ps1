@@ -21,7 +21,7 @@ function getValidationURL {
 }
 
 $currentBranch = "dev"
-$validationURL = "https://raw.githubusercontent.com/canada-ca-azure-templates/$templateLibraryName/dev/template/masterdeploy.json"
+$validationURL = "https://raw.githubusercontent.com/canada-ca-azure-templates/$templateLibraryName/dev/template/azuredeploy.json"
 
 if (-not $devopsCICD) {
     $currentBranch = git rev-parse --abbrev-ref HEAD
