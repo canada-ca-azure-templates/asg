@@ -3,7 +3,7 @@ Param(
     [string]$templateName = "azuredeploy.json",
     [string]$Location = "canadacentral",
     [string]$subscription = "2de839a0-37f9-4163-a32a-e1bdb8d6eb7e",
-    [bool]$devopsCICD = $false
+    [switch]$devopsCICD = $false
 )
 
 #******************************************************************************
