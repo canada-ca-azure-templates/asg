@@ -20,7 +20,7 @@ function getValidationURL {
     return $validateURL
 }
 
-$currentBranch = dev
+$currentBranch = "dev"
 $validationURL = "https://raw.githubusercontent.com/canada-ca-azure-templates/$templateLibraryName/dev/template/masterdeploy.json"
 
 if (-not $devopsCICD) {
