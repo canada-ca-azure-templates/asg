@@ -14,7 +14,7 @@ The following security controls can be met through configuration of this templat
 
 ## Dependancies
 
-* [Resource Groups](https://github.com/canada-ca/accelerators_accelerateurs-azure/blob/master/Templates/arm/resourcegroups/latest/readme.md)
+* [Resource Groups](https://github.com/canada-ca-azure-templates/resourcegroups)
 
 ## Parameter format
 
@@ -72,13 +72,11 @@ The following security controls can be met through configuration of this templat
 
 ## History
 
-| Date     | Change                                                                                                                           |
-| -------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| 20181204 | First release of template.                                                                                                       |
-| 20181211 | Updating deploy.ps1 to support new Azure subscription and be more flexible by moving variables as parameter with default values. |
-| 20181214 | Implementing new template name as template.json                                                                                  |
-| 20190205 | Template folder cleanup.                                                                                                         |
-| 20190220 | Just a test.                                                                                                                     |
-| 20190426 | Updated documentation                                                                                                            |
-| 20190430 | Updated documentation                                                                                                            |
-| 20190501 | Updated documentation                                                                                                            |
+| Date     | Release                                                                    | Change                                                                                                                           |
+| -------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| 20181204 |                                                                            | First release of template.                                                                                                       |
+| 20181211 |                                                                            | Updating deploy.ps1 to support new Azure subscription and be more flexible by moving variables as parameter with default values. |
+| 20181214 |                                                                            | Implementing new template name as template.json                                                                                  |
+| 20190205 |                                                                            | Template folder cleanup.                                                                                                         |
+| 20190220 |                                                                            | Just a test.                                                                                                                     |
+| 20190501 | [20190501](https://github.com/canada-ca-azure-templates/asg/tree/20190501) | Updated documentation                                                                                                            |
