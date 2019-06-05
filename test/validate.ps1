@@ -3,7 +3,8 @@ Param(
     [string]$Location = "canadacentral",
     [string]$subscription = "",
     [switch]$devopsCICD = $false,
-    [switch]$doNotCleanup = $false
+    [switch]$doNotCleanup = $false,
+    [switch]$doNotDeployPreReq = $false
 )
 
 #******************************************************************************
@@ -37,18 +38,19 @@ if (-not $devopsCICD) {
     $currentBranch = git rev-parse --abbrev-ref HEAD
 
     if ($currentBranch -eq 'master') {
-        $confirmation = Read-Host "You are working off the master branch... are you sure you want to validate the template from here? Switch to the dev branch is recommended. Continue? (y/n)"
-        if ($confirmation -ne 'y') {
-            exit
-        }
+        Write-Host "You are working off the master branch... Validation will happen against the github master branch code and will not include any changes you may have made."
+        Write-Host "If you want to walidate changes you have made make sure to create a new branch and push those to the remote github server with something like:"
+        Write-Host ""
+        Write-Host "git branch dev ; git checkout dev; git add ..\. ; git commit -m "Update validation" ; git push -u origin dev"
+    }
+    else {
+        # Make sure we update code to git
+        # git branch dev ; git checkout dev ; git pull origin dev
+        git add ..\. ; git commit -m "Update validation" ; git push -u origin $currentBranch
     }
 
     $validationURL = getValidationURL
     $baseParametersURL = getBaseParametersURL
-
-    # Make sure we update code to git
-    # git branch dev ; git checkout dev ; git pull origin dev
-    git add ..\. ; git commit -m "Update validation" ; git push origin $currentBranch
 }
 
 if ($subscription -ne "") {
@@ -67,16 +69,30 @@ if (-not $doNotCleanup) {
     }
 }
 
-# Start the deployment
-Write-Host "Starting $templateLibraryName dependancies deployment...";
+if (-not $doNotDeployPreReq) {
+    # Start the deployment
+    Write-Host "Starting $templateLibraryName dependancies deployment...";
 
-New-AzureRmDeployment -Location $Location -Name "Deploy-$templateLibraryName-Template-Infrastructure-Dependancies" -TemplateUri "https://raw.githubusercontent.com/canada-ca-azure-templates/masterdeploy/20190514/template/masterdeploysub.json" -TemplateParameterFile (Resolve-Path -Path "$PSScriptRoot\parameters\masterdeploysub.parameters.json") -baseParametersURL $baseParametersURL -Verbose;
+    New-AzureRmDeployment -Location $Location -Name "Deploy-$templateLibraryName-Template-Infrastructure-Dependancies" -TemplateUri "https://raw.githubusercontent.com/canada-ca-azure-templates/masterdeploy/20190605/template/masterdeploysub.json" -TemplateParameterFile (Resolve-Path -Path "$PSScriptRoot\parameters\masterdeploysub.parameters.json") -baseParametersURL $baseParametersURL -Verbose;
 
-$provisionningState = (Get-AzureRmDeployment -Name "Deploy-$templateLibraryName-Template-Infrastructure-Dependancies").ProvisioningState
+    $provisionningState = (Get-AzureRmDeployment -Name "Deploy-$templateLibraryName-Template-Infrastructure-Dependancies").ProvisioningState
 
-if ($provisionningState -eq "Failed") {
-    Write-Host "One of the jobs was not successfully created... exiting..."
-    exit
+    if ($provisionningState -eq "Failed") {
+        Write-Host "One of the jobs was not successfully created... exiting..."
+    
+        if (-not $doNotCleanup) {
+            #check for existing resource group
+            $resourceGroup = Get-AzureRmResourceGroup -Name PwS2-validate-$templateLibraryName-RG -ErrorAction SilentlyContinue
+    
+            if ($resourceGroup) {
+                Write-Host "Cleanup old $templateLibraryName template validation resources if needed..."
+    
+                Remove-AzureRmResourceGroup -Name PwS2-validate-$templateLibraryName-RG -Verbose -Force
+            }
+        }
+
+        throw "Dependancies deployment failed..."
+    }
 }
 
 # Validating server template
@@ -84,15 +100,22 @@ Write-Host "Starting $templateLibraryName validation deployment...";
 
 New-AzureRmResourceGroupDeployment -ResourceGroupName PwS2-validate-$templateLibraryName-RG -Name "validate-$templateLibraryName-template" -TemplateUri $validationURL -TemplateParameterFile (Resolve-Path "$PSScriptRoot\parameters\validate.parameters.json") -Verbose
 
-$provisionningState = (Get-AzureRmResourceGroupDeployment -ResourceGroupName PwS2-validate-$templateLibraryName-RG -Name "validate-$templateLibraryName-template").ProvisioningState
+$provisionningStateValidation = (Get-AzureRmResourceGroupDeployment -ResourceGroupName PwS2-validate-$templateLibraryName-RG -Name "validate-$templateLibraryName-template").ProvisioningState
 
-if ($provisionningState -eq "Failed") {
-    Write-Host  "Test deployment failed..."
+if (-not $doNotCleanup) {
+    #check for existing resource group
+    $resourceGroup = Get-AzureRmResourceGroup -Name PwS2-validate-$templateLibraryName-RG -ErrorAction SilentlyContinue
+
+    if ($resourceGroup) {
+        Write-Host "Cleanup old $templateLibraryName template validation resources if needed..."
+
+        Remove-AzureRmResourceGroup -Name PwS2-validate-$templateLibraryName-RG -Verbose -Force
+    }
 }
 
-# Cleanup validation resource content
-if (-not $doNotCleanup) {
-    Write-Host "Cleanup $templateLibraryName template validation resources...";
-
-    Remove-AzureRmResourceGroup -Name PwS2-validate-$templateLibraryName-RG -Verbose -Force
+if ($provisionningStateValidation -eq "Failed") {
+    throw "Validation deployment failed..."
+}
+else {
+    Write-Host  "Validation deployment succeeded..."
 }
