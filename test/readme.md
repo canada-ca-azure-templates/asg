@@ -17,6 +17,7 @@ If you want to keep the resources created during the validation to inspect them 
 ## Steps to merge dev branch commits in one commit to master and cleanup
 
 ```
+git branch dev
 git checkout dev
 git add .
 git commit -m "Commiting last changes in dev before merge"
